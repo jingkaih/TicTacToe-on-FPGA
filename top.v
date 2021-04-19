@@ -38,15 +38,25 @@ module top(
 
     always @(*) begin
         case (key_value_keyborad_in)
-            4'h0: key_value = 4'h1;
-            4'h1: key_value = 4'h2;
-            4'h2: key_value = 4'h3;
-            4'h4: key_value = 4'h4;
-            4'h5: key_value = 4'h5;
-            4'h6: key_value = 4'h6;
-            4'h8: key_value = 4'h7;
-            4'h9: key_value = 4'h8;
-            4'ha: key_value = 4'h9;
+            // 4'h0: key_value = 4'h1;
+            // 4'h1: key_value = 4'h2;
+            // 4'h2: key_value = 4'h3;
+            // 4'h4: key_value = 4'h4;
+            // 4'h5: key_value = 4'h5;
+            // 4'h6: key_value = 4'h6;
+            // 4'h8: key_value = 4'h7;
+            // 4'h9: key_value = 4'h8;
+            // 4'ha: key_value = 4'h9;
+            // default: key_value = 4'h0;
+            4'hf: key_value = 4'h1;
+            4'he: key_value = 4'h2;
+            4'hd: key_value = 4'h3;
+            4'hb: key_value = 4'h4;
+            4'ha: key_value = 4'h5;
+            4'h9: key_value = 4'h6;
+            4'h7: key_value = 4'h7;
+            4'h6: key_value = 4'h8;
+            4'h5: key_value = 4'h9;
             default: key_value = 4'h0;
         endcase
     end
