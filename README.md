@@ -9,4 +9,6 @@ By toggling the switch, you can choose which mode to play
 ## PLL is needed
 I'm setting the output frequency to 25MHz to drive 640*480 pixels' screen
 
+
+[demo](https://youtu.be/EIPxszzuzhw)
 More details are about to come...
