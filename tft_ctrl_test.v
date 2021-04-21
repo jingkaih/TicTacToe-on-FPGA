@@ -45,7 +45,17 @@ module tft_ctrl_test(
     CYAN = 16'h07FF, //青色
     YELLOW	= 16'hFFE0, //黄色
     WHITE = 16'hFFFF; //白色
-
+    
+  //定义每个像素块的默认显示颜色值
+	localparam 
+    R0_C0 = BLACK,	 //第0行0列像素块
+    R0_C1 = BLUE,	   //第0行1列像素块
+    R1_C0 = RED,	   //第1行0列像素块
+    R1_C1 = PURPPLE, //第1行1列像素块
+    R2_C0 = GREEN,	 //第2行0列像素块
+    R2_C1 = CYAN,	   //第2行1列像素块
+    R3_C0 = YELLOW,	 //第3行0列像素块
+    R3_C1 = WHITE;	 //第3行1列像素块
 	
 	wire pll_locked;
 	wire tft_reset_p;
@@ -74,14 +84,28 @@ module tft_ctrl_test(
 	wire TFT_pwm;
 	wire Disp_PCLK;
 
+	// assign R0_act = visible_vcount >= 0   && visible_vcount < 120; //正在扫描第0行条纹
+	// assign R1_act = visible_vcount >= 120 && visible_vcount < 240; //正在扫描第1行条纹
+	// assign R2_act = visible_vcount >= 240 && visible_vcount < 360; //正在扫描第2行条纹
+	// assign R3_act = visible_vcount >= 360 && visible_vcount < 480; //正在扫描第3行条纹
+	// assign C0_act = visible_hcount >= 0   && visible_hcount < 400; //正在扫描第0列条纹
+	// assign C1_act = visible_hcount >= 400 && visible_hcount < 800; //正在扫描第1列条纹
 
+	// assign R0_C0_act = disp_data_req && R0_act && C0_act;	//第0行0列像素块处于被扫描中标志信号
+	// assign R0_C1_act = disp_data_req && R0_act && C1_act;	//第0行1列像素块处于被扫描中标志信号
+	// assign R1_C0_act = disp_data_req && R1_act && C0_act;	//第1行0列像素块处于被扫描中标志信号
+	// assign R1_C1_act = disp_data_req && R1_act && C1_act;	//第1行1列像素块处于被扫描中标志信号
+	// assign R2_C0_act = disp_data_req && R2_act && C0_act;	//第2行0列像素块处于被扫描中标志信号
+	// assign R2_C1_act = disp_data_req && R2_act && C1_act;	//第2行1列像素块处于被扫描中标志信号
+	// assign R3_C0_act = disp_data_req && R3_act && C0_act;	//第3行0列像素块处于被扫描中标志信号
+	// assign R3_C1_act = disp_data_req && R3_act && C1_act;	//第3行1列像素块处于被扫描中标志信号
 	assign grid_verti_1 = disp_data_req && (visible_hcount == 266);
 	assign grid_verti_2 = disp_data_req && (visible_hcount == 532);
 	assign grid_horiz_1 = disp_data_req && (visible_vcount == 160);
 	assign grid_horiz_2 = disp_data_req && (visible_vcount == 320);
 
-	wire [1:0] block1;//00 means this area is not picked by anyone, 01 means player1 color this area, 10 means player2 color this area
-	wire [1:0] block2;//the same goes for the following area
+	wire [1:0] block1;
+	wire [1:0] block2;
 	wire [1:0] block3;
 	wire [1:0] block4;
 	wire [1:0] block5;
@@ -114,9 +138,9 @@ module tft_ctrl_test(
 
 
 
-
-	assign tft_reset_p = ~pll_locked;
-	pll pll// clk_in1 must have set to "Global Buffer" in IP configuration
+//	assign tft_reset_n = pll_locked;
+	assign tft_reset_p = ~pll_locked; //锁相环提供的TFT屏复位信号进行取反，满足高电平复位
+	pll pll
 	(
 		// Clock out ports
 		.clk_out1(clk_ctrl), // output clk_out1
@@ -152,6 +176,20 @@ module tft_ctrl_test(
 	assign TFT_rgb={Disp_Red,Disp_Green,Disp_Blue};
 	assign TFT_clk=Disp_PCLK;
 	assign TFT_pwm=1'b1;
+	
+	// always@(*)
+	// 	case({R3_C1_act,R3_C0_act,R2_C1_act,R2_C0_act,
+	// 			  R1_C1_act,R1_C0_act,R0_C1_act,R0_C0_act})
+	// 		8'b0000_0001:disp_data = R0_C0;
+	// 		8'b0000_0010:disp_data = R0_C1;
+	// 		8'b0000_0100:disp_data = R1_C0;
+	// 		8'b0000_1000:disp_data = R1_C1;
+	// 		8'b0001_0000:disp_data = R2_C0;
+	// 		8'b0010_0000:disp_data = R2_C1;
+	// 		8'b0100_0000:disp_data = R3_C0;
+	// 		8'b1000_0000:disp_data = R3_C1;
+	// 		default:disp_data = R0_C0;
+	// 	endcase
 	
 
 

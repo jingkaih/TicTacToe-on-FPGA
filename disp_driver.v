@@ -1,3 +1,20 @@
+/////////////////////////////////////////////////////////////////////////////////
+// Company       : 武汉芯路恒科技有限公司
+//                 http://xiaomeige.taobao.com
+// Web           : http://www.corecourse.cn
+// 
+// Create Date   : 2020/07/20 00:00:00
+// Module Name   : disp_driver
+// Description   : 显示设备驱动模块
+// 
+// Dependencies  : 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+/////////////////////////////////////////////////////////////////////////////////
+
 `include "disp_parameter_cfg.v"
 
 module disp_driver(
@@ -35,7 +52,7 @@ module disp_driver(
   output reg [`Green_Bits - 1 :0]Disp_Green;
   output reg [`Blue_Bits - 1 :0]Disp_Blue;
 
-  output reg Frame_Begin;
+  output reg Frame_Begin; //一帧图像起始标识信号，ClkDisp时钟域
   output reg Disp_DE;
   output Disp_PCLK;
 

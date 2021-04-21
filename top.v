@@ -8,9 +8,12 @@ module top(
         TFT_vs,
         TFT_clk,
         TFT_de,
-        TFT_pwm
-    );
+        TFT_pwm,
 
+        mode_switch
+    );
+    input mode_switch;//0: human vs human
+                      //1. human vs AI
 
 	output wire [15:0]TFT_rgb;  //TFT数据输出
 	output wire TFT_hs;   //TFT行同步信号
@@ -33,20 +36,20 @@ module top(
     wire [3:0] move_P2;
     wire key_flag;
 
-    wire [3:0] key_value_keyborad_in;
-    reg [3:0] key_value;
+    wire [3:0] key_value_keyborad_in;//实际键盘按键输入
+    reg [3:0] key_value;//将键盘实际输入map到1~9的期望输入
 
     always @(*) begin
         case (key_value_keyborad_in)
-            4'h0: key_value = 4'h1;
-            4'h1: key_value = 4'h2;
-            4'h2: key_value = 4'h3;
-            4'h4: key_value = 4'h4;
-            4'h5: key_value = 4'h5;
-            4'h6: key_value = 4'h6;
-            4'h8: key_value = 4'h7;
-            4'h9: key_value = 4'h8;
-            4'ha: key_value = 4'h9;
+            4'hf: key_value = 4'h1;
+            4'he: key_value = 4'h2;
+            4'hd: key_value = 4'h3;
+            4'hb: key_value = 4'h4;
+            4'ha: key_value = 4'h5;
+            4'h9: key_value = 4'h6;
+            4'h7: key_value = 4'h7;
+            4'h6: key_value = 4'h8;
+            4'h5: key_value = 4'h9;
             default: key_value = 4'h0;
         endcase
     end
@@ -101,7 +104,9 @@ module top(
         .move_P1_i(move_P1_i),
         .move_P2_i(move_P2_i),
         .move_P1(move_P1),
-        .move_P2(move_P2)
+        .move_P2(move_P2),
+        .over(over),
+        .mode_switch(mode_switch)
     );
 
     tft_ctrl_test tft_ctrl_test_inst(

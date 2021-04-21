@@ -9,9 +9,9 @@ module tictactoe(
     );
 
     input clk, reset_n;
-    input move_P1_i;//P1 just moved, this signal comes at the same time of move_P1 being toggled
-    input move_P2_i;
-    input [3:0] move_P1;//4-9 encoder
+    input move_P1_i;//P1 just moved, this signal comes at the same time of move_P1 toggling
+    input move_P2_i;//P2 just moved, 
+    input [3:0] move_P1;//4-9 encoder//上一级模块负责置位清零
     input [3:0] move_P2;//4-9 encoder
 
     assign reset = ~reset_n;
@@ -25,7 +25,8 @@ module tictactoe(
     output reg illegal_move;
     output reg over;
     output reg [1:0] winner;
-
+    // output reg [8:0] chessboard_P1;//用于记录玩家P1的落子
+    // output reg [8:0] chessboard_P2;//用于记录玩家P2的落子
 
     always @(posedge clk, posedge reset) begin
         if(reset)
