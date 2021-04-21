@@ -1,6 +1,8 @@
 `timescale 1ns / 1ps
+// -utf8-
 
-//1.要赢，2.要防守，3.要布局（占中间）
+
+//1.要赢，2.要防守，3.要布局（后手防守占中间）
 //if(我AI有两连子，且人类没有占用另一子)
 //  我落子，并赢下比赛
 //else if(某条线上有人类有两连子，且我不曾占用剩下的位置)
@@ -10,17 +12,16 @@
 //else if（人类第一子落子中间）
 //  我抢任意角落，之后所有情况都是我的对于2连子的防守，且我必不会输
 //else if（某几路仅有我的一子，人类不曾涉足，一般在开局比较常见）
-//  if(出现两类共8种L型pattern)：L型的边框，人类在每条边占据了不同时为角的两个位置
-//      堵住那个交汇点角落，否则我必输
-//  else if(非L型pattern，两类共4种)
-//      if（是对边型）
-//          抢任意角，必赢
-//      else if（是对角型）
+//  if(出现两类共8种L型pattern)：所谓L型pattern指的是L型的边框，人类在落下第二子，在每某两边占据了不同时为角的两个位置：| | | | or | | |x|
+//      我得在L的任意一边落子，否则我必输                                                                           | |o|x|    | |o| |
+//  else if(非L型pattern，两类共4种)                                                                               | |x| |    | |x| |
+//      if（是对边型）                              对边型：| |x| |   对角型：| | |x|
+//          抢任意角，必赢                                  | |o| |          | |o| |
+//      else if（是对角型）                                 | |x| |          |x| | |
 //          抢任意边，必不会输
 //  else
 //      随机pick一个落点
-//      
-//       
+
 
 
 
@@ -48,11 +49,7 @@ module AI_player(
 
     output reg [8:0] chessboard_AI;
 
-    //key_flag后一拍，chessboard_human才会变
-    //chessboard_human和key_flag_dly1同时变
-    //occupied与chessboard_human同时改变
-    //occupied计数器first vacant的值在下一个拍才能被使用
-    //occupied计数器的值和key_flag_dly2同时变
+
     reg key_flag_dly1;
     reg key_flag_dly2;
     always @(posedge clk, posedge reset) begin
@@ -314,14 +311,13 @@ module AI_player(
                 key_value_AI <= 4'h5;
             end
             /////////////////////
-            //中心点被抢了，夺取9号位角落（能随机不？？？？）
+            //中心点被抢了，夺取9号位角落
             /////////////////////
             else if(priority4_move_corner) begin
                 chessboard_AI <= 9'b000_000_001;
                 key_flag_AI <= 1;
                 key_value_AI <= 4'h9;
             end
-            //
             /////////////////////
             //我夺了中心点后，人类第二子落位可能导致的几种（未构成二连子的）开局情况
             /////////////////////

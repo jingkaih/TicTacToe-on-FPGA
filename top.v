@@ -3,25 +3,27 @@
 
 module top(
     clk, reset_n, winner, over, keyboard_row_x4_i, keyboard_col_x4_o, 
-        TFT_rgb,
-        TFT_hs,
-        TFT_vs,
-        TFT_clk,
-        TFT_de,
-        TFT_pwm,
+
+
+
+        VGA_RGB,//TFT数据输出
+        VGA_HS, //TFT行同步信号
+        VGA_VS, //TFT场同步信号
+        VGA_BLK,//VGA 场消隐信号
+        VGA_CLK,
+
 
         mode_switch
     );
     input mode_switch;//0: human vs human
                       //1. human vs AI
 
-	output wire [15:0]TFT_rgb;  //TFT数据输出
-	output wire TFT_hs;   //TFT行同步信号
-	output wire TFT_vs;   //TFT场同步信号
-	output wire TFT_clk;  //TFT像素时钟
-	output wire TFT_de;   //TFT数据使能
-	output wire TFT_pwm;  //TFT背光控制
 
+    output wire [23:0] VGA_RGB;//TFT数据输出
+    output wire VGA_HS; //TFT行同步信号
+    output wire VGA_VS; //TFT场同步信号
+    output wire VGA_BLK;//VGA 场消隐信号
+    output wire VGA_CLK;
 
 
     input clk, reset_n;
@@ -109,17 +111,16 @@ module top(
         .mode_switch(mode_switch)
     );
 
-    tft_ctrl_test tft_ctrl_test_inst(
-        .clk50M(clk),
-        .reset_n(reset_n),
 
-        .TFT_rgb(TFT_rgb),
-        .TFT_hs(TFT_hs),
-        .TFT_vs(TFT_vs),
-        .TFT_clk(TFT_clk),
-        .TFT_de(TFT_de),
-        .TFT_pwm(TFT_pwm),
 
+    VGA_driver VGA_driver_inst(
+        .Clk(clk),
+        .Reset_n(reset_n),
+        .VGA_RGB(VGA_RGB),//TFT数据输出
+        .VGA_HS(VGA_HS), //TFT行同步信号
+        .VGA_VS(VGA_VS),//TFT场同步信号
+        .VGA_BLK(VGA_BLK),//VGA 场消隐信号
+        .VGA_CLK(VGA_CLK),
         .position_1(position_1),
         .position_2(position_2),
         .position_3(position_3),

@@ -25,8 +25,7 @@ module tictactoe(
     output reg illegal_move;
     output reg over;
     output reg [1:0] winner;
-    // output reg [8:0] chessboard_P1;//用于记录玩家P1的落子
-    // output reg [8:0] chessboard_P2;//用于记录玩家P2的落子
+
 
     always @(posedge clk, posedge reset) begin
         if(reset)
